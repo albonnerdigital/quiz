@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>H.R. Pufnstuf Quiz</title>
+  <style>
+    body { font-family: Arial; max-width: 700px; margin: 30px auto; line-height: 1.6; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 10px; }
+    .options label { display: block; margin-bottom: 5px; cursor: pointer; }
+    #next-btn { margin-top: 10px; }
+    #score-container { font-size: 20px; font-weight: bold; margin-top: 30px; }
+  </style>
+</head>
+<body>
+
+  <h1>H.R. Pufnstuf Quiz</h1>
+  <div id="quiz-container"></div>
+  <div id="score-container"></div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Who was the primary villain in H.R. Pufnstuf?",
+        options: ["Dr. Shrinker", "Benita Bizarre", "Wilhelmina W. Witchiepoo", "Horatio J. Hoodoo"],
+        correct: "Wilhelmina W. Witchiepoo",
+        points: 10
+      },
+      {
+        question: "What is the name of the boy who is the main human character?",
+        options: ["Johnny", "Mark", "Jimmy", "Jack"],
+        correct: "Jimmy",
+        points: 10
+      },
+      {
+        question: "What is the magical item that Witchiepoo is constantly trying to steal from Jimmy?",
+        options: ["magical talking hat", "talking flute named Freddy", "crystal that controls time", "A golden boomerang"],
+        correct: "talking flute named Freddy",
+        points: 10
+      },
+      {
+        question: "What is H.R. Pufnstuf's official title on Living Island?",
+        options: ["Chief of Police", "King", "Mayor", "Sheriff"],
+        correct: "Mayor",
+        points: 10
+      },
+      {
+        question: "What does Witchiepoo call her flying vehicle?",
+        options: ["The Sky-Cycle", "The Vroom Broom", "The Doom Buggy", "The Witch-Wagon"],
+        correct: "The Vroom Broom",
+        points: 10
+      },
+      {
+        question: "What are the names of Witchiepoo's two main, bumbling henchmen?",
+        options: ["Burke and Sigmund", "Scout and Sparky", "Orson and Seymour", "Weenie and The Big Dude"],
+        correct: "Orson and Seymour",
+        points: 10
+      },
+      {
+        question: "How did Jimmy originally arrive on Living Island?",
+        options: [
+          "He slid down a giant tube into a world of living hats.",
+          "A magical talking boat took him there.",
+          "He fell through a time portal during an earthquake.",
+          "He flew in on a winged insect."
+        ],
+        correct: "A magical talking boat took him there.",
+        points: 10
+      },
+      {
+        question: "What type of animal is Dr. Blinky?",
+        options: ["A gopher", "An owl", "A frog", "A lion"],
+        correct: "An owl",
+        points: 10
+      },
+      {
+        question: "The Rescue Racer Crew, Cling and Clang, have what job on the island?",
+        options: ["Firefighters and Deputies", "Musicians and Dancers", "Mail Carriers", "Chefs and Bakers"],
+        correct: "Firefighters and Deputies",
+        points: 10
+      },
+      {
+        question: "How many episodes of H.R. Pufnstuf were originally produced for its single season?",
+        options: ["32", "12", "26", "17"],
+        correct: "17",
+        points: 10
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+
+      if (currentQuestion < quizData.length) {
+        const q = quizData[currentQuestion];
+
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = `Q${currentQuestion + 1}: ${q.question}`;
+        questionDiv.appendChild(h3);
+
+        q.options.forEach(option => {
+          const label = document.createElement('label');
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = 'question';
+          input.value = option;
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(option));
+          questionDiv.appendChild(label);
+        });
+
+        const nextBtn = document.createElement('button');
+        nextBtn.id = 'next-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.onclick = checkAnswer;
+        questionDiv.appendChild(nextBtn);
+
+        container.appendChild(questionDiv);
+      } else {
+        showScore();
+      }
+    }
+
+    function checkAnswer() {
+      const selected = document.querySelector('input[name="question"]:checked');
+      if (selected && selected.value === quizData[currentQuestion].correct) {
+        score += quizData[currentQuestion].points;
+      }
+      currentQuestion++;
+      loadQuestion();
+    }
+
+    function showScore() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = `<h2>Quiz Complete!</h2><p>You scored <strong>${score}</strong> out of <strong>${quizData.length * 10}</strong> possible points.</p>`;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
